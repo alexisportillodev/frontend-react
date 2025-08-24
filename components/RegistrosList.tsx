@@ -47,7 +47,7 @@ const formatDate = (dateString: string | undefined): string => {
   if (!dateString) return 'N/A';
   try {
     return format(new Date(dateString), 'dd/MM/yyyy', { locale: es });
-  } catch (error) {
+  } catch {
     return 'Fecha inválida';
   }
 };
@@ -63,7 +63,7 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
           No hay registros de marcas
         </h3>
         <p className="text-gray-500">
-          Comienza creando tu primer registro de marca usando el botón "Nuevo Registro"
+          Comienza creando tu primer registro de marca usando el botón &quot;Nuevo Registro&quot;
         </p>
       </div>
     );
