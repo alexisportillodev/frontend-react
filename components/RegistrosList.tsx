@@ -62,7 +62,7 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
           No hay registros de marcas
         </h3>
         <p style={{ color: 'var(--foreground)' }}>
-          Comienza creando tu primer registro de marca usando el botón "Nuevo Registro"
+          Comienza creando tu primer registro de marca usando el botón &quot;Nuevo Registro&quot;
         </p>
       </div>
     );
@@ -86,7 +86,10 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
         </thead>
         <tbody style={{ backgroundColor: 'var(--background)' }}>
           {registros.map((registro) => (
-            <tr key={registro.id} className="hover:bg-gray-50 transition-colors">
+            <tr
+              key={registro.id}
+              className="transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex flex-col">
                   <div style={{ color: 'var(--foreground)', fontWeight: 600 }}>
@@ -108,14 +111,16 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
               <td className="px-6 py-4 whitespace-nowrap">
                 <div style={{ color: 'var(--foreground)' }}>{registro.categoria}</div>
                 {registro.descripcion && (
-                  <div style={{
-                    color: 'var(--foreground)',
-                    fontSize: '0.75rem',
-                    maxWidth: '200px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}>
+                  <div
+                    style={{
+                      color: 'var(--foreground)',
+                      fontSize: '0.75rem',
+                      maxWidth: '200px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {registro.descripcion}
                   </div>
                 )}
@@ -137,7 +142,9 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoBadgeClass(registro.estado)}`}>
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoBadgeClass(registro.estado)}`}
+                >
                   {formatEstado(registro.estado)}
                 </span>
               </td>
@@ -158,7 +165,7 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
                 <div className="flex items-center justify-end gap-2">
                   <button
                     onClick={() => onEdit(registro)}
-                    className="px-2 py-1 rounded transition-colors"
+                    className="px-2 py-1 rounded transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
                     style={{ color: 'var(--corporate-red-dark)' }}
                   >
                     <Edit size={16} />
@@ -166,7 +173,7 @@ export default function RegistrosList({ registros, onEdit, onDelete }: Registros
 
                   <button
                     onClick={() => registro.id && onDelete(registro.id)}
-                    className="px-2 py-1 rounded transition-colors"
+                    className="px-2 py-1 rounded transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
                     style={{ color: 'var(--corporate-red)' }}
                   >
                     <Trash2 size={16} />
