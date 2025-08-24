@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { RegistroMarca, CreateRegistroMarca, EstadoRegistro } from '@/types';
+import { RegistroMarca, CreateRegistroMarca, EstadoRegistro, UpdateRegistroMarca } from '@/types';
 import { Save, X } from 'lucide-react';
 
 interface RegistroFormProps {
-  onSubmit: (data: CreateRegistroMarca | any) => Promise<void>;
+  onSubmit: (data: CreateRegistroMarca | UpdateRegistroMarca) => Promise<void>;
   onCancel: () => void;
   initialData?: RegistroMarca | null;
 }
@@ -106,7 +106,7 @@ export default function RegistroForm({ onSubmit, onCancel, initialData }: Regist
     setLoading(true);
     try {
       // Preparar datos para enviar (omitir campos vacíos opcionales)
-      const submitData: any = {
+      const submitData: CreateRegistroMarca | UpdateRegistroMarca = {
         nombre_marca: formData.nombre_marca.trim(),
         categoria: formData.categoria.trim(),
         solicitante: formData.solicitante.trim(),
@@ -123,9 +123,9 @@ export default function RegistroForm({ onSubmit, onCancel, initialData }: Regist
 
       // Solo incluir estado y número de solicitud si estamos editando
       if (initialData) {
-        submitData.estado = formData.estado;
+        (submitData as UpdateRegistroMarca).estado = formData.estado;
         if (formData.numero_solicitud.trim()) {
-          submitData.numero_solicitud = formData.numero_solicitud.trim();
+          (submitData as UpdateRegistroMarca).numero_solicitud = formData.numero_solicitud.trim();
         }
       }
 
