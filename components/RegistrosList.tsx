@@ -11,22 +11,23 @@ interface RegistrosListProps {
   onDelete: (id: number) => void;
 }
 
-const getEstadoBadgeColor = (estado: EstadoRegistro): string => {
+// Función para asignar clase CSS según el estado
+const getEstadoBadgeClass = (estado: EstadoRegistro): string => {
   switch (estado) {
     case EstadoRegistro.PENDIENTE:
-      return 'bg-yellow-100 text-yellow-800';
+      return 'badge-pendiente';
     case EstadoRegistro.EN_REVISION:
-      return 'bg-blue-100 text-blue-800';
+      return 'badge-en_revision';
     case EstadoRegistro.APROBADO:
-      return 'bg-green-100 text-green-800';
+      return 'badge-aprobado';
     case EstadoRegistro.RECHAZADO:
-      return 'bg-red-100 text-red-800';
+      return 'badge-rechazado';
     case EstadoRegistro.VIGENTE:
-      return 'bg-emerald-100 text-emerald-800';
+      return 'badge-vigente';
     case EstadoRegistro.VENCIDO:
-      return 'bg-gray-100 text-gray-800';
+      return 'badge-vencido';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'badge-vencido';
   }
 };
 
@@ -39,9 +40,7 @@ const estadoLabels: Record<EstadoRegistro, string> = {
   [EstadoRegistro.VENCIDO]: "Vencido",
 };
 
-const formatEstado = (estado: EstadoRegistro): string => {
-  return estadoLabels[estado] || "Desconocido";
-};
+const formatEstado = (estado: EstadoRegistro): string => estadoLabels[estado] || "Desconocido";
 
 const formatDate = (dateString: string | undefined): string => {
   if (!dateString) return 'N/A';
@@ -55,124 +54,120 @@ const formatDate = (dateString: string | undefined): string => {
 export default function RegistrosList({ registros, onEdit, onDelete }: RegistrosListProps) {
   if (registros.length === 0) {
     return (
-      <div className="p-8 text-center">
+      <div className="p-8 text-center" style={{ fontFamily: 'var(--font-sans)' }}>
         <div className="mb-4">
-          <Tag size={48} className="mx-auto text-gray-400" />
+          <Tag size={48} className="mx-auto" style={{ color: 'var(--corporate-red)' }} />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+        <h3 className="text-lg font-medium mb-2" style={{ color: 'var(--corporate-red-dark)' }}>
           No hay registros de marcas
         </h3>
-        <p className="text-gray-500">
-          Comienza creando tu primer registro de marca usando el botón &quot;Nuevo Registro&quot;
+        <p style={{ color: 'var(--foreground)' }}>
+          Comienza creando tu primer registro de marca usando el botón "Nuevo Registro"
         </p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto" style={{ fontFamily: 'var(--font-sans)' }}>
+      <table className="min-w-full" style={{ borderCollapse: 'collapse' }}>
+        <thead style={{ backgroundColor: 'var(--background)' }}>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Marca
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Categoría
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Solicitante
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Estado
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Fecha Solicitud
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Acciones
-            </th>
+            {['Marca', 'Categoría', 'Solicitante', 'Estado', 'Fecha Solicitud', 'Acciones'].map((text) => (
+              <th
+                key={text}
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                style={{ color: 'var(--corporate-red-dark)' }}
+              >
+                {text}
+              </th>
+            ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody style={{ backgroundColor: 'var(--background)' }}>
           {registros.map((registro) => (
-            <tr key={registro.id} className="hover:bg-gray-50">
+            <tr key={registro.id} className="hover:bg-gray-50 transition-colors">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex flex-col">
-                  <div className="text-sm font-medium text-gray-900">
+                  <div style={{ color: 'var(--foreground)', fontWeight: 600 }}>
                     {registro.nombre_marca}
                   </div>
                   {registro.numero_solicitud && (
-                    <div className="text-xs text-gray-500">
+                    <div style={{ color: 'var(--foreground)', fontSize: '0.75rem' }}>
                       N° {registro.numero_solicitud}
                     </div>
                   )}
                   {registro.clase_niza && (
-                    <div className="text-xs text-blue-600">
+                    <div style={{ color: 'var(--corporate-red-dark)', fontSize: '0.75rem' }}>
                       Clase: {registro.clase_niza}
                     </div>
                   )}
                 </div>
               </td>
-              
+
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{registro.categoria}</div>
+                <div style={{ color: 'var(--foreground)' }}>{registro.categoria}</div>
                 {registro.descripcion && (
-                  <div className="text-xs text-gray-500 max-w-xs truncate">
+                  <div style={{
+                    color: 'var(--foreground)',
+                    fontSize: '0.75rem',
+                    maxWidth: '200px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}>
                     {registro.descripcion}
                   </div>
                 )}
               </td>
-              
+
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <User size={16} className="text-gray-400" />
-                  </div>
+                  <User size={16} style={{ color: 'var(--foreground)' }} />
                   <div className="ml-2">
-                    <div className="text-sm font-medium text-gray-900">
+                    <div style={{ color: 'var(--foreground)', fontWeight: 600 }}>
                       {registro.solicitante}
                     </div>
-                    <div className="text-xs text-gray-500 flex items-center">
+                    <div style={{ color: 'var(--foreground)', fontSize: '0.75rem', display: 'flex', alignItems: 'center' }}>
                       <Mail size={12} className="mr-1" />
                       {registro.email_solicitante}
                     </div>
                   </div>
                 </div>
               </td>
-              
+
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoBadgeColor(registro.estado)}`}>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoBadgeClass(registro.estado)}`}>
                   {formatEstado(registro.estado)}
                 </span>
               </td>
-              
+
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center text-sm text-gray-900">
+                <div style={{ color: 'var(--foreground)', fontSize: '0.875rem', display: 'flex', alignItems: 'center' }}>
                   <Calendar size={14} className="mr-1" />
                   {formatDate(registro.fecha_solicitud)}
                 </div>
                 {registro.fecha_aprobacion && (
-                  <div className="text-xs text-green-600">
+                  <div style={{ color: 'var(--corporate-red-dark)', fontSize: '0.75rem' }}>
                     Aprobado: {formatDate(registro.fecha_aprobacion)}
                   </div>
                 )}
               </td>
-              
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+
+              <td className="px-6 py-4 whitespace-nowrap text-right">
                 <div className="flex items-center justify-end gap-2">
                   <button
                     onClick={() => onEdit(registro)}
-                    className="text-blue-600 hover:text-blue-900 p-1 rounded-md hover:bg-blue-50 transition-colors"
-                    title="Editar registro"
+                    className="px-2 py-1 rounded transition-colors"
+                    style={{ color: 'var(--corporate-red-dark)' }}
                   >
                     <Edit size={16} />
                   </button>
-                  
+
                   <button
                     onClick={() => registro.id && onDelete(registro.id)}
-                    className="text-red-600 hover:text-red-900 p-1 rounded-md hover:bg-red-50 transition-colors"
-                    title="Eliminar registro"
+                    className="px-2 py-1 rounded transition-colors"
+                    style={{ color: 'var(--corporate-red)' }}
                   >
                     <Trash2 size={16} />
                   </button>

@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F9FAFB; /* Fondo claro */
+  --foreground: rgb(178, 196, 233); /* Texto principal */
+  --corporate-red: #F87171; /* Color principal corporativo */
+  --corporate-red-dark: #EF4444; /* Color secundario */
+  --font-sans: 'Inter', Arial, Helvetica, sans-serif;
+  --font-mono: 'Courier New', monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #473e3e;
+    --hover-bg: #1a1a1a; /* gris oscuro para hover en modo oscuro */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Badges de estados de los registros */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Colores de los estados */
+.badge-pendiente {
+  background-color: #FEF3C7; /* amarillo claro */
+  color: #B45309; /* texto amarillo oscuro */
+}
+
+.badge-en_revision {
+  background-color: #DBEAFE; /* azul claro */
+  color: #1D4ED8; /* azul oscuro */
+}
+
+.badge-aprobado {
+  background-color: #D1FAE5; /* verde claro */
+  color: #065F46; /* verde oscuro */
+}
+
+.badge-rechazado {
+  background-color: var(--corporate-red); /* rojo corporativo */
+  color: white;
+}
+
+.badge-vigente {
+  background-color: #DCFCE7; /* verde claro */
+  color: #065F46; /* verde oscuro */
+}
+
+.badge-vencido {
+  background-color: #E5E7EB; /* gris claro */
+  color: #374151; /* gris oscuro */
 }
