@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRegistros } from '@/hooks/useRegistros';
-import { RegistroMarca, CreateRegistroMarca, UpdateRegistroMarca } from '@/types';
+import { RegistroMarca, CreateRegistroMarca, UpdateRegistroMarca, EstadoRegistro } from '@/types';
 import RegistrosList from '@/components/RegistrosList';
 import RegistroForm from '@/components/RegistroForm';
 import { Plus } from 'lucide-react';
@@ -13,21 +13,21 @@ export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [editingRegistro, setEditingRegistro] = useState<RegistroMarca | null>(null);
 
-  const handleCreate = async (data: CreateRegistroMarca) => {
-    const result = await createRegistro(data);
-    if (result) setShowForm(false);
-  };
-
-  const handleUpdate = async (data: UpdateRegistroMarca) => {
+  // Función única que maneja create o update según el estado de edición
+  const handleSubmitForm = async (data: CreateRegistroMarca | UpdateRegistroMarca) => {
     if (editingRegistro?.id) {
-      const result = await updateRegistro(editingRegistro.id, data);
+      const result = await updateRegistro(editingRegistro.id, data as UpdateRegistroMarca);
       if (result) {
         setEditingRegistro(null);
         setShowForm(false);
       }
+    } else {
+      const result = await createRegistro(data as CreateRegistroMarca);
+      if (result) {
+        setShowForm(false);
+      }
     }
   };
-
 
   const handleEdit = (registro: RegistroMarca) => {
     setEditingRegistro(registro);
@@ -84,7 +84,7 @@ export default function Home() {
               {editingRegistro ? 'Editar Registro' : 'Nuevo Registro'}
             </h2>
             <RegistroForm
-              onSubmit={editingRegistro ? handleUpdate : handleCreate}
+              onSubmit={handleSubmitForm}
               onCancel={handleCancel}
               initialData={editingRegistro}
             />
